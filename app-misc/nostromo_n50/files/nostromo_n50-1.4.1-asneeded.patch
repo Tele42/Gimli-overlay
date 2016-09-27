@@ -1,0 +1,11 @@
+diff --git a/Makefile.am b/Makefile.am
+index 8e0dd26..e3372ed 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -2,5 +2,5 @@
+ #
+ #
+ 
+-SUBDIRS = src doc
++SUBDIRS = src
+ 
