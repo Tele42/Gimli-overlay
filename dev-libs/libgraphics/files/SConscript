@@ -1,0 +1,50 @@
+# -*- mode: python -*-
+from sys import platform
+import os
+import SCons.Util
+
+src_dll = ["basics.cpp","command_line.cpp","enabler.cpp","files.cpp",
+           "find_files_posix.cpp","graphics.cpp","init.cpp","interface.cpp",
+           "keybindings.cpp","music_and_sound_openal.cpp", "random.cpp",
+           "textlines.cpp","enabler_input.cpp","ViewBase.cpp",
+           "KeybindingScreen.cpp", "win32_compat.cpp", "textures.cpp",
+           "resize++.cpp", "renderer_offscreen.cpp",
+           "ttf_manager.cpp"]
+
+dll  = '#libs/libgraphics.so'
+
+libgraphics = True
+tetris = False
+
+# Propagate PATH. We'll just take our chances with non-repeatable builds.
+env = Environment(ENV = {'PATH' : os.environ.get('PATH', '/usr/bin:/bin')})
+
+# Libraries and linking
+env['LIBS']=["SDL_image","z","SDL_ttf","sndfile"]
+#env['LINKFLAGS']=['-Wl,-rpath=\$$ORIGIN/libs']
+
+# Generic unix, including Linux
+env.ParseConfig('pkg-config gtk+-2.0 --cflags --libs')
+env.ParseConfig('pkg-config openal --cflags')
+env.ParseConfig('pkg-config sndfile --cflags')
+env.ParseConfig('pkg-config sdl --cflags --libs')
+env.ParseConfig('pkg-config glu --cflags --libs')
+env.ParseConfig('pkg-config glew --cflags --libs')
+
+# flags and compiler
+env['CCFLAGS'].append("-Dunix")
+env['CXXFLAGS'].append("-std=gnu++0x")
+# this is gentoo, respect my flags
+env['CC'] = os.environ.get('CC', 'gcc')
+env['CCFLAGS'] += SCons.Util.CLVar(os.environ.get('CFLAGS', ''))
+env['CXX'] = os.environ.get('CXX', 'g++')
+env['CXXFLAGS'] += SCons.Util.CLVar(os.environ.get('CXXFLAGS', ''))
+env['LINKFLAGS'] += SCons.Util.CLVar(os.environ.get('LDFLAGS', ''))
+env['LIBPATH'] = SCons.Util.CLVar(os.environ.get('LIBPATH', ''))
+
+# Finally, do the build
+if libgraphics:
+   env.SharedLibrary(dll, src_dll)
+
+if tetris:
+   env.Program("#tetris", src_dll + ["tetris.cpp"])

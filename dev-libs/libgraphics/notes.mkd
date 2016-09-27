@@ -1,0 +1,124 @@
+# 40.24
+Minor changes
+
+# 40.23
+No changes
+
+# 40.22
+No changes
+
+# 40.21
+No significant changes
+
+# 40.20
+Keybindings change
+
+# 40.19
+Lots of changes since 40.13
+
+# 40.13
+*No* changes since 40.11
+
+# 40.12
+*No* changes since 40.11
+
+# 40.11
+Minor changes, keybindings.
+
+# 40.10
+*No* changes since 40.07.
+
+# 40.09
+*No* changes since 40.07.
+
+# 40.08
+*No* changes since 40.07.
+
+# 40.07
+Minor changes, keybindings.
+
+# 40.06
+## pkg-config files needed
+- gtk+-2.0 --cflags --libs
+    - x11-libs/gtk+:2[abi_x86_32]
+- openal --cflags
+    - media-libs/openal[abi_x86_32]
+- sndfile --cflags
+    - media-libs/libsndfile[abi_x86_32]
+- sdl --cflags --libs
+    - media-libs/libsdl[abi_x86_32]
+- glu --cflags --libs
+    - media-libs/glu
+        - virtual/glu[abi_x86_32]
+    - (or <=media-libs/mesa-9)
+- glew --cflags --libs
+    - media-libs/glew[abi_x86_32]
+
+## scons libs
+- SDL_image
+    - media-libs/sdl-image[abi_x86_32]
+- SDL_ttf
+    - media-libs/sdl-ttf[abi_x86_32]
+- sndfile
+    - seems removed by --as-needed
+    - media-libs/libsndfile[abi_x86_32]
+- z
+    - sys-libs/zlib[abi_x86_32]
+
+## linked libraries:
+- libGLEW.so.1.10
+    - media-libs/glew
+- libGL.so.1
+    - gl.pc
+        - glu.pc
+- libGLU.so.1
+    - glu.pc
+- libgobject-2.0.so.0
+    - gobject-2.0.pc
+        - atk.pc, cairo.pc, gdk-pixbuf-2.0.pc, gio-2.0.pc
+	    - gtk+-2.0.pc
+- libgtk-x11-2.0.so.0
+    - gtk+-2.0.pc
+- libSDL-1.2.so.0
+    - sdl.pc
+- libSDL_image-1.2.so.0
+    - scons SDL_image
+- libSDL_ttf-2.0.so.0
+    - scons SDL_ttf
+- libz.so.1
+    - scons z
+
+	media-libs/sdl-image
+	sys-libs/zlib
+	media-libs/sdl-ttf
+    - x11-libs/gtk+:2[abi_x86_32]
+
+## includes
+- x11-libs/gtk+-2.24.24 (/usr/include/gtk-2.0/gtk/gtk.h)
+- sys-libs/zlib-1.2.8-r1 (/usr/include/zlib.h)
+- sys-libs/ncurses-5.9-r3 (/usr/include/ncursesw/curses.h)
+    - only on unix
+    - sys-libs/ncurses
+- media-libs/sdl-ttf-2.0.11-r1 (/usr/include/SDL/SDL_ttf.h)
+- media-libs/sdl-image-1.2.12-r1 (/usr/include/SDL/SDL_image.h)
+- media-libs/openal-1.15.1-r2 (/usr/include/AL/al.h)
+    - only linux
+- media-libs/openal-1.15.1-r2 (/usr/include/AL/alc.h)
+    - only linux
+- media-libs/libsndfile-1.0.25-r1 (/usr/include/sndfile.h)
+    - only linux
+- media-libs/libsdl-1.2.15-r8 (/usr/include/SDL/SDL_thread.h)
+- media-libs/libsdl-1.2.15-r8 (/usr/include/SDL/SDL.h)
+- media-libs/fmod-4.38.02 (/opt/fmodex/api/inc/fmod.hpp)
+    - not on linux
+- media-libs/fmod-4.38.02 (/opt/fmodex/api/inc/fmod_errors.h)
+    - not on linux
+
+## dlopen
+- df_linux_40_06/g_src/renderer_curses.cpp:      handle = dlopen("libncursesw.so.5", RTLD_LAZY);
+- df_linux_40_06/g_src/renderer_curses.cpp:      handle = dlopen("libncursesw.so", RTLD_LAZY);
+- df_linux_40_06/g_src/renderer_curses.cpp:      handle = dlopen("libncurses.so.5", RTLD_LAZY);
+- df_linux_40_06/g_src/renderer_curses.cpp:      handle = dlopen("libncurses.so", RTLD_LAZY);
+- df_linux_40_06/g_src/music_and_sound_openal.cpp:  void *handle = dlopen("libopenal.so", RTLD_LAZY);
+- df_linux_40_06/g_src/music_and_sound_openal.cpp:  void *handle = dlopen("libsndfile.so", RTLD_LAZY);
+- df_linux_40_06/g_src/music_and_sound_openal.cpp:  if (!handle) handle = dlopen("libsndfile.so.1", RTLD_LAZY);
