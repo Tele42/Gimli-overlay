@@ -6,14 +6,14 @@
 
 EAPI=5
 
-if [[ ${PV} == *9999 ]] ; then
+if [[ ${PVR} == *9999 ]] ; then
 	addgit="git-r3"
 	MY_P=${P}
 	EGIT_REPO_URI="git://github.com/spurious/SDL-mirror.git"
-elif [[ ${PV} == *9999-r1 ]] ; then
+elif [[ ${PVR} == *9999-r1 ]] ; then
 	addgit="git-r3"
 	MY_P=${P}
-	EGIT_REPO_URI="git://github.com/Tele42/SDL-jackexperiment.git"
+	EGIT_REPO_URI="git://github.com/Tele42/SDL2-jackexperiment.git"
 else
 	MY_P=SDL2-${PV}
 	SRC_URI="http://www.libsdl.org/release/${MY_P}.tar.gz"
