@@ -35,7 +35,7 @@ src_prepare() {
 src_install() {
 	default
 	dohtml doc/*
-	insinto /etc/udev/rules.d
+	insinto /lib/udev/rules.d
 	doins "${FILESDIR}/60-nostromo.rules"
 
 	make_desktop_entry nostromo_config "Nostromo Configuration" /usr/share/pixmaps/n50_tray.png "System"
