@@ -4,16 +4,12 @@
 
 # TODO: convert FusionSound #484250
 
-EAPI=5
+EAPI=6
 
 if [[ ${PVR} == *9999 ]] ; then
 	addgit="git-r3"
 	MY_P=${P}
 	EGIT_REPO_URI="git://github.com/spurious/SDL-mirror.git"
-elif [[ ${PVR} == *9999-r1 ]] ; then
-	addgit="git-r3"
-	MY_P=${P}
-	EGIT_REPO_URI="git://github.com/Tele42/SDL2-jackexperiment.git"
 else
 	MY_P=SDL2-${PV}
 	SRC_URI="http://www.libsdl.org/release/${MY_P}.tar.gz"
@@ -28,11 +24,12 @@ LICENSE="ZLIB"
 SLOT="0"
 KEYWORDS=""
 
-IUSE="cpu_flags_x86_3dnow alsa altivec custom-cflags dbus fusionsound gles haptic +joystick cpu_flags_x86_mmx nas opengl oss pulseaudio +sound cpu_flags_x86_sse cpu_flags_x86_sse2 static-libs +threads tslib udev +video wayland X xinerama xscreensaver"
+IUSE="cpu_flags_x86_3dnow alsa altivec custom-cflags dbus fusionsound gles haptic jack +joystick cpu_flags_x86_mmx nas opengl oss pulseaudio +sound cpu_flags_x86_sse cpu_flags_x86_sse2 static-libs +threads tslib udev +video wayland X xinerama xscreensaver"
 REQUIRED_USE="
 	alsa? ( sound )
 	fusionsound? ( sound )
 	gles? ( video )
+	jack? ( sound )
 	nas? ( sound )
 	opengl? ( video )
 	pulseaudio? ( sound )
@@ -45,6 +42,7 @@ RDEPEND="
 	dbus? ( >=sys-apps/dbus-1.6.18-r1[${MULTILIB_USEDEP}] )
 	fusionsound? ( || ( >=media-libs/FusionSound-1.1.1 >=dev-libs/DirectFB-1.7.1[fusionsound] ) )
 	gles? ( >=media-libs/mesa-9.1.6[${MULTILIB_USEDEP},gles2] )
+	jack? ( virtual/jack[${MULTILIB_USEDEP}] )
 	nas? ( >=media-libs/nas-1.9.4[${MULTILIB_USEDEP}] )
 	opengl? (
 		>=virtual/opengl-7.0-r1[${MULTILIB_USEDEP}]
@@ -76,11 +74,15 @@ DEPEND="${RDEPEND}
 	)
 	virtual/pkgconfig"
 
+PATCHES=(
+	# https://bugzilla.libsdl.org/show_bug.cgi?id=1431
+	"${FILESDIR}"/${P}-static-libs.patch
+)
+
 S=${WORKDIR}/${MY_P}
 
 src_prepare() {
-	# https://bugzilla.libsdl.org/show_bug.cgi?id=1431
-	epatch "${FILESDIR}"/${P}-static-libs.patch
+	default
 	sed -i -e 's/configure.in/configure.ac/' Makefile.in || die
 	mv configure.{in,ac} || die
 	AT_M4DIR="/usr/share/aclocal acinclude" eautoreconf
@@ -119,6 +121,7 @@ multilib_src_configure() {
 		--disable-esd \
 		$(use_enable pulseaudio) \
 		--disable-pulseaudio-shared \
+		$(use_enable jack) \
 		--disable-arts \
 		$(use_enable nas) \
 		--disable-nas-shared \
