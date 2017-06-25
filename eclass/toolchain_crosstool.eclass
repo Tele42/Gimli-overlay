@@ -1434,7 +1434,7 @@ gcc_do_configure() {
 }
 
 # This function accepts one optional argument, the make target to be used.
-# If ommitted, gcc_do_make will try to guess whether it should use all,
+# If omitted, gcc_do_make will try to guess whether it should use all,
 # profiledbootstrap, or bootstrap-lean depending on CTARGET and arch. An
 # example of how to use this function:
 #
