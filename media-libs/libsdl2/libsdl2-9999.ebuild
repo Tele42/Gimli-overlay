@@ -9,7 +9,7 @@ EAPI=6
 if [[ ${PVR} == *9999 ]] ; then
 	addgit="git-r3"
 	MY_P=${P}
-	EGIT_REPO_URI="git://github.com/spurious/SDL-mirror.git"
+	EGIT_REPO_URI="https://github.com/spurious/SDL-mirror.git"
 else
 	MY_P=SDL2-${PV}
 	SRC_URI="http://www.libsdl.org/release/${MY_P}.tar.gz"
@@ -156,7 +156,8 @@ multilib_src_configure() {
 		--disable-directx \
 		--disable-rpath \
 		--disable-render-d3d \
-		$(use_with X x)
+		$(use_with X x) \
+		--disable-video-vulkan
 }
 
 multilib_src_install() {
